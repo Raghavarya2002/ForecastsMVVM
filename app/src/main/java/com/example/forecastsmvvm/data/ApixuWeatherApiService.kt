@@ -1,6 +1,5 @@
 package com.example.forecastsmvvm.data
 
-import com.example.forecastsmvvm.data.response.CurrentWeatherResponse
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import kotlinx.coroutines.Deferred
 import okhttp3.Interceptor
@@ -10,16 +9,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-//ef8738d496c04ef87833f45e863bbbf0
-const val API_Key = "ef8738d496c04ef87833f45e863bbbf0"
+//38c43fe3163e4551bea162220211109
+const val API_Key = "38c43fe3163e4551bea162220211109"
 
-//http://api.weatherstack.com/current?access_key=ef8738d496c04ef87833f45e863bbbf0&query=New%20York&lang=en
+//http://api.weatherapi.com/v1/current.json?key=38c43fe3163e4551bea162220211109&q=London&aqi=no
 interface ApixuWeatherApiService {
 
-    @GET("current")
+    @GET("current.json")
     fun getCurrentWeatherAsync(
 
-        @Query("query") location: String,
+        @Query("q") location: String,
         @Query("lang") languageCode: String = "en"
     ): Deferred<CurrentWeatherResponse> // Deferred is some kind of analog of Future in Java: in encapsulates an operation that will be finished at some point in future after it's initialization. But is also related to coroutines in Kotlin.
 
@@ -31,7 +30,7 @@ interface ApixuWeatherApiService {
                 val url = chain.request()
                     .url()
                     .newBuilder()
-                    .addQueryParameter("access_key", API_Key)
+                    .addQueryParameter("key", API_Key)
                     .build()
                 val request = chain.request()
                     .newBuilder()
@@ -48,7 +47,7 @@ interface ApixuWeatherApiService {
 
             return Retrofit.Builder()
                 .client(okHttpClient)
-                .baseUrl("https://api.weatherstack.com/")
+                .baseUrl("https://api.weatherapi.com/v1/")
                 .addCallAdapterFactory(CoroutineCallAdapterFactory())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
