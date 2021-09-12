@@ -3,7 +3,11 @@ package com.example.forecastsmvvm.data.db.entity
 
 import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
+
+
+const val CURRENT_WEATHER_ID = 0
 
 // entities are the tables in the SQLite database , so we annotate this class with an entity
 //annotation which is from android x room library
@@ -55,4 +59,7 @@ data class CurrentWeatherEntry(
     val windKph: Double,
     @SerializedName("wind_mph")
     val windMph: Double
-)
+) {
+    @PrimaryKey(autoGenerate = false)
+    var id: Int = CURRENT_WEATHER_ID
+}
