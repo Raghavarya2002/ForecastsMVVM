@@ -3,13 +3,14 @@ package com.example.forecastsmvvm.data.db
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.example.forecastsmvvm.data.db.entity.CurrentWeatherEntry
 
 @Database(
     entities = [CurrentWeatherEntry::class],
     version = 1
 )
-abstract class ForecastDatabase {
+abstract class ForecastDatabase : RoomDatabase() {
 
     abstract fun currentWeatherDao(): CurrentWeatherDao
 
