@@ -1,4 +1,4 @@
-package com.example.forecastsmvvm.data
+package com.example.forecastsmvvm.data.network
 
 import com.example.forecastsmvvm.data.network.response.CurrentWeatherResponse
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
@@ -26,7 +26,9 @@ interface ApixuWeatherApiService {
     companion object {
         //companion object are basically like static methods
         //If you need to write a function that can be called without having a class instance but needs access to the internals of a class
-        operator fun invoke(): ApixuWeatherApiService {
+        operator fun invoke(
+            connectivityInterceptor: ConnectivityInterceptor
+        ): ApixuWeatherApiService {
             val requestInterceptor = Interceptor { chain ->
                 val url = chain.request()
                     .url()
@@ -43,7 +45,8 @@ interface ApixuWeatherApiService {
             }
 
             val okHttpClient = OkHttpClient.Builder()
-                .addInterceptor(requestInterceptor)
+                .addInterceptor(requestInterceptor) //interceptor is the one which adds our API key to each and every query that we make
+                .addInterceptor(connectivityInterceptor)
                 .build()
 
             return Retrofit.Builder()
